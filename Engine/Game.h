@@ -33,6 +33,7 @@
 #include <random>
 #include "Ball.h"
 #include "SpawnPoint.cpp"
+#include "Sound.h"
 
 class Game
 {
@@ -53,6 +54,9 @@ private:
 	/********************************/
 	/*  User Variables              */
 	static constexpr float maxBallDistance = 2000.0f;
+
+	Sound colideSound = Sound(L"Sounds\\hit.wav");
+
 	FrameTimer ft;
 	CoordinateTransformer ct;
 	Camera cam;

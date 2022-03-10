@@ -5,7 +5,7 @@
 class SpawnPoint
 {
 public:
-	SpawnPoint(std::vector<Ball>& container,float radius,Vec2 pos,float minvx, float maxvx, float vy)
+	SpawnPoint(std::vector<Ball>& container, float radius, Vec2 pos, float minvx, float maxvx, float vy, float period)
 		:
 		pos(pos),
 		vxDist(minvx, maxvx),
@@ -28,7 +28,7 @@ public:
 	}
 private:
 	std::mt19937 rng = std::mt19937(std::random_device{}( ));
-	std::uniform_int_distribution<float> vxDist;
+	std::uniform_real_distribution<float> vxDist;
 	float period;
 	float radius;
 	Vec2 pos;

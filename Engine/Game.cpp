@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "Star.h"
+#include "ChilliMath.h"
 
 Game::Game(MainWindow& wnd)
 	:
@@ -30,7 +31,7 @@ Game::Game(MainWindow& wnd)
 	cam(ct),
 	camCtrl(wnd.mouse, cam),
 	plank({ 100.0f,200.0f }, -380.0f, -100.0f, 290.0f),
-	spawn(balls, 15.0f, { 0.0f,-250.0f }, -100.0f, 100.0f, 50)
+	spawn(balls, 15.0f, { 0.0f,-250.0f }, -100.0f, 25.0f, 150.0f, 2.0f)
 {
 }
 
@@ -45,8 +46,18 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
+
 	for( auto& ball : balls )
 	{
+		const auto plankPts = plank.GetPoints();
+		if( DistancePointLine(plankPts.first, plankPts.second, ball.GetPos()) < ball.GetRadius() )
+		{
+			const Vec2 w = plank.GetPlankSurfaceVector().GetNormalized();
+			const Vec2 v = ball.GetVel();
+			//in the dot product video
+			ball.SetVel(w * ( v * w ) * 2.0f - v);
+			colideSound.Play(1.0f,0.01f);
+		}
 		ball.Update(dt);
 	}
 	spawn.Update(dt);
